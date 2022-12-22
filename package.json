@@ -1,6 +1,6 @@
 {
   "name": "gadin-auth",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A module for quick setup and convenient use of Authentication in nestjs.",
   "author": "Mohammad Sardari <m.sardari@live.com>",
   "license": "MIT",
