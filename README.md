@@ -1,49 +1,65 @@
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+You can to use gadin-auth package easily and setup it.
 
-## Installation
+## Usage
 
-```bash
-$ npm install
+### Step 1: Installation
+
+```sh
+npm install gadin-auth
 ```
 
-## Running the app
+wait for the installation to finish.
 
-```bash
-# development
-$ npm run start
+### Step 2: Module initialization
 
-# watch mode
-$ npm run start:dev
+You've to added below code in your root module:
 
-# production mode
-$ npm run start:prod
+```ts
+@Module({
+  imports: [
+    AuthModule.forRoot({
+      PUB_KEY: readFileSync(process.env.JWT_PUB),
+      PRV_KEY: readFileSync(process.env.JWT_PRV),
+      signOptions: {
+        issuer: "SARDAR",
+        algorithm: "ES256",
+        expiresIn: "2m"
+      }
+    })
+  ],
+})
+export class AppModule {
+}
 ```
 
-## Test
+### Notices
 
-```bash
-# unit tests
-$ npm run test
+1. You have to generate private_key and public_key by ssh.
+2. select one item for Algorithm
 
-# e2e tests
-$ npm run test:e2e
+### Step 3: Use in Services
 
-# test coverage
-$ npm run test:cov
+You've to inject RedisClient in your service and use redis methods like below:
+
+```ts
+export class AppService {
+  constructor(private readonly jwtService: JwtHandler) {
+  }
+
+  async createAccessToken() {
+    return  await this.jwtService.sign<Payload>({ id, name, email, mobile });
+  }
+}
+
 ```
 
-## Support
+### Hint
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+``
+Import JwtHandler from the gadin-auth
+``
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
-
-Nest is [MIT licensed](LICENSE).
